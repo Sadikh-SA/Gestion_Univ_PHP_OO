@@ -320,7 +320,7 @@ class Service
             $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
             $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
             $ter=$xy;
-            while ($row = $pre->fetch()) {
+            while ($row = $pre1->fetch()) {
                 $ter = $row['idtype'];
                 //break;
             }
@@ -331,7 +331,31 @@ class Service
                 $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idtype' => $ter));
                 var_dump($donne);
             }
-            
+
+            $res = $this->getPDO()->prepare("select * from Batiment where numbat=:numbat");
+            $don = $res->execute(array(':numbat' => $objet->getBatiment()));
+            $idbat=$don;
+            while ($row = $res->fetch()) {
+                $idbat = $row['idbat'];
+                //break;
+            }
+            var_dump($idbat);
+
+            $pre2 = $this->getPDO()->prepare("select * from Chambre where numcham=:numcham AND idbat=:idbat");
+            $xyz = $pre2->execute(array(':numcham' => $objet->getChambre(), ':idbat' => $idbat));
+            $terre=$xyz;
+            while ($row = $pre2->fetch()) {
+                $terre = $row['idcham'];
+                //break;
+            }
+            var_dump($terre);
+
+            if ($zx) {
+                $requete = "UPDATE Loger SET idbour=:idbour, idEtu=:idEtu, idcham=:idcham  where idbour=:idbour";
+                $res = $this->getPDO()->prepare($requete);
+                $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idcham' => $terre));
+                var_dump($donne);
+            }
         }
 
         

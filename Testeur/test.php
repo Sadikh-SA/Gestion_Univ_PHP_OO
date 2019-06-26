@@ -3,7 +3,7 @@
 include '../Classes/ServiceEtudiant.php';
 $test = new Service();	
 
-$matricule="SA990920";
-$etudiant = new Boursier($matricule,"GUEYE","Mouhamadou Lamine","777777777","lg@mail.com","2017-06-07","Demi-pension");
+$matricule="SA940311";
+$etudiant = new Loger($matricule,"GUEYE","Libasse","774514521","lgg@mail.com","1987-03-05","Demi-pension","15","Campus A");
 $test->update($etudiant,$matricule);
 ?>
