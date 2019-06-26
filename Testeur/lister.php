@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="../Bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
     <script src="../bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script src="https://cdn.datatables.net/plug-ins/1.10.19/i18n/French.json"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <title>Lister l'ensemble des Etudiants</title>
@@ -38,7 +39,8 @@
 					<th>Prénom</th>
 					<th>Email</th>
 					<th>Telephone</th>
-                    <th>Date De Naissance</th>
+					<th>Date De Naissance</th>
+					<th>Statut</th>
                     <th>Editer</th>
                     <th>Supprimer</th>
                 </tr>
@@ -57,7 +59,10 @@
 							echo "<td>".$row['prenom']."</td>";
 							echo "<td>".$row['mail']."</td>";
 							echo "<td>".$row['tel']."</td>";
-                            echo "<td>".$row['ddn']."</td>";
+							echo "<td>".$row['ddn']."</td>";
+							$statut = $row['matricule'];
+							$y= $test->statut($statut);
+							echo "<td>".$y."</td>";
                             echo'<td align="center"><button class="btn btn-primary">modifier</button></td>';
                             echo'<td align="center"><button class="btn btn-danger">supprimer</button></td>';
                             echo "</tr>";

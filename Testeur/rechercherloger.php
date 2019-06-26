@@ -65,13 +65,9 @@
                 echo "<td>".$row['mail']."</td>";
                 echo "<td>".$row['tel']."</td>";
                 echo "<td>".$row['ddn']."</td>";
-                /*$pdo = new PDO("mysql:host=127.0.0.1;dbname=MiniProjetPHPOO","root","Moimeme2018");
-                $requete = "select libelle from Situation,Loger where Situation.idtype=Loger.idtype";
-                $res = $pdo->prepare($requete);
-                $donnee = $res ->execute();
-                $a = $res->fetch();*/
-                  echo '<td>libelle</td>';
-                
+                $statut = $row['matricule'];
+                $y= $test->statut($statut);
+                echo "<td>".$y."</td>";
                 echo'<td align="center"><button class="btn btn-primary">modifier</button></td>';
                 echo'<td align="center"><button class="btn btn-danger">supprimer</button></td>';
               echo "</tr>";

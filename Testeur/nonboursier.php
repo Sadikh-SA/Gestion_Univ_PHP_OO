@@ -45,7 +45,6 @@
 					<th>Email</th>
 					<th>Telephone</th>
           <th>Date De Naissance</th>
-          <th>Type de Bourse</th>
           <th>Editer</th>
           <th>Supprimer</th>
                 </tr>
@@ -65,13 +64,6 @@
                 echo "<td>".$row['mail']."</td>";
                 echo "<td>".$row['tel']."</td>";
                 echo "<td>".$row['ddn']."</td>";
-                /*$pdo = new PDO("mysql:host=127.0.0.1;dbname=MiniProjetPHPOO","root","Moimeme2018");
-                $requete = "select libelle from Situation,Loger where Situation.idtype=Loger.idtype";
-                $res = $pdo->prepare($requete);
-                $donnee = $res ->execute();
-                $a = $res->fetch();*/
-                  echo '<td>libelle</td>';
-                
                 echo'<td align="center"><button class="btn btn-primary">modifier</button></td>';
                 echo'<td align="center"><button class="btn btn-danger">supprimer</button></td>';
               echo "</tr>";
