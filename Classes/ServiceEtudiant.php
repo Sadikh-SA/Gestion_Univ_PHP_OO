@@ -268,19 +268,56 @@ class Service
         }
         var_dump($y);
         if (get_class($objet) == "NonBoursier") {
-            $pre = $this->getPDO()->prepare("select * from NonBoursier where NonBoursier.idEtu=:idEtu");
+
+            $pres = $this->getPDO()->prepare("select * from Loger where Loger.idEtu=:idEtu");
+            $moi = $pres->execute(array(':idEtu' => $y));
+            $log=$moi;
+            while ($row = $pre->fetch()) {
+                $log = $row['idEtu'];
+                //break;
+            }
+            var_dump($log);
+            
+            $pre = $this->getPDO()->prepare("select * from Boursier where Boursier.idEtu=:idEtu");
             $zx = $pre->execute(array(':idEtu' => $y));
             $z=$zx;
             while ($row = $pre->fetch()) {
-                $z = $row['idnob'];
+                $z = $row['idEtu'];
                 //break;
             }
             var_dump($z);
-            if ($zx) {
-                $requete = "UPDATE NonBoursier SET idEtu=:idEtu, Adresse=:Adresse where idnob=:idnob";
+
+            if ($z!=0 || $z!=NULL) {
+                if ($log!=null || $log!=0) {
+                    $requete = "DELETE FROM Loger where idEtu=:idEtu";
+                    $stmt = $this->getPDO()->prepare($requete);
+                    $resu = $stmt->execute(array(':idEtu' =>$log));
+                    var_dump($resu);
+                }
+                $requete = "DELETE FROM Boursier where idEtu=:idEtu";
+                $stmt = $this->getPDO()->prepare($requete);
+                $resu = $stmt->execute(array(':idEtu' =>$z));
+                var_dump($resu);
+
+                $requete = "INSERT INTO NonBoursier SET idEtu=:idEtu, Adresse=:Adresse";
                 $res = $this->getPDO()->prepare($requete);
-                $donne = $res->execute(array(':idnob' => $z, ':idEtu' => $y, ':Adresse' => $objet->getAdresse()));
-                var_dump($donne);
+                $donnee = $res->execute(array(':idEtu' => $y, ':Adresse' => $objet->getAdresse()));
+                return $donnee;
+            } else {
+                $pre = $this->getPDO()->prepare("select * from NonBoursier where NonBoursier.idEtu=:idEtu");
+                $zx = $pre->execute(array(':idEtu' => $y));
+                $z=$zx;
+                while ($row = $pre->fetch()) {
+                    $z = $row['idnob'];
+                    //break;
+                }
+                var_dump($z);
+                if ($zx) {
+                    $requete = "UPDATE NonBoursier SET idEtu=:idEtu, Adresse=:Adresse where idnob=:idnob";
+                    $res = $this->getPDO()->prepare($requete);
+                    $donne = $res->execute(array(':idnob' => $z, ':idEtu' => $y, ':Adresse' => $objet->getAdresse()));
+                    var_dump($donne);
+                }   
             }
         }elseif (get_class($objet) == "Boursier") {
             $pre = $this->getPDO()->prepare("select * from Boursier where Boursier.idEtu=:idEtu");
@@ -357,7 +394,5 @@ class Service
                 var_dump($donne);
             }
         }
-
-        
     }
 }

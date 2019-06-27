@@ -187,7 +187,7 @@
 						?>
 						<script>
 							var bat = document.getElementById("bat").value;
-							alert(bat);
+							//alert(bat);
 						</script>
 					</select>
 				</div>
