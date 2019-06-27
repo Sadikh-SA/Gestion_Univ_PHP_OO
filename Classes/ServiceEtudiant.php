@@ -255,7 +255,6 @@ class Service
     public function update(Etudiant $objet , $matricule)
     {
         $requete = "UPDATE Etudiant SET matricule=:matricule, nom=:nom, prenom=:prenom, mail=:mail, tel=:tel, ddn=:ddn where matricule=:matricule1";
-
         $res = $this->getPDO()->prepare($requete);
         $donne = $res->execute(array(':matricule' => $objet->getMatricule(), ':nom' => $objet->getNom(), ':prenom' => $objet->getPrenom(), ':mail' => $objet->getMail(), ':tel' => $objet->getTel(), ':ddn' => $objet->getDdn(), ':matricule1' => $matricule));
         var_dump($donne);
@@ -320,78 +319,264 @@ class Service
                 }   
             }
         }elseif (get_class($objet) == "Boursier") {
-            $pre = $this->getPDO()->prepare("select * from Boursier where Boursier.idEtu=:idEtu");
+
+            $pres = $this->getPDO()->prepare("select * from Loger where Loger.idEtu=:idEtu");
+            $moi = $pres->execute(array(':idEtu' => $y));
+            $log=$moi;
+            while ($row = $pre->fetch()) {
+                $log = $row['idEtu'];
+                //break;
+            }
+            var_dump($log);
+            
+            $pre = $this->getPDO()->prepare("select * from NonBoursier where NonBoursier.idEtu=:idEtu");
             $zx = $pre->execute(array(':idEtu' => $y));
             $z=$zx;
             while ($row = $pre->fetch()) {
-                $z = $row['idbour'];
+                $z = $row['idEtu'];
                 //break;
             }
             var_dump($z);
 
-            $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
-            $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
-            $ter=$xy;
+            $pres = $this->getPDO()->prepare("select * from Loger where Loger.idEtu=:idEtu");
+            $moi = $pres->execute(array(':idEtu' => $y));
+            $log=$moi;
             while ($row = $pre->fetch()) {
-                $ter = $row['idtype'];
+                $log = $row['idEtu'];
                 //break;
             }
-            var_dump($ter);
-            if ($z) {
-                $requete = "UPDATE Boursier SET idbour=:idbour, idEtu=:idEtu, idtype=:idtype  where idbour=:idbour";
+            var_dump($log);
+
+            if ($z!=0 || $z!=NULL) {
+                $requete = "DELETE FROM NonBoursier where idEtu=:idEtu";
+                $stmt = $this->getPDO()->prepare($requete);
+                $resu = $stmt->execute(array(':idEtu' =>$z));
+                var_dump($resu);
+
+                $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
+                $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
+                $ter=$xy;
+                while ($row = $pre->fetch()) {
+                    $ter = $row['idtype'];
+                    //break;
+                }
+                var_dump($ter);
+
+                $requete = "INSERT INTO Boursier (idEtu,idtype) VALUE (?,?)";
                 $res = $this->getPDO()->prepare($requete);
-                $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idtype' => $ter));
-                var_dump($donne);
+                $res->execute(array($y, $ter));
+
+            }else{
+
+                if($log!=0 || $log!=NULL) {
+                    $requete = "DELETE FROM Loger where idEtu=:idEtu";
+                    $stmt = $this->getPDO()->prepare($requete);
+                    $resu = $stmt->execute(array(':idEtu' =>$log));
+                    var_dump($resu);
+                }
+                $pre = $this->getPDO()->prepare("select * from Boursier where Boursier.idEtu=:idEtu");
+                $zx = $pre->execute(array(':idEtu' => $y));
+                $z=$zx;
+                while ($row = $pre->fetch()) {
+                    $z = $row['idbour'];
+                    //break;
+                }
+                var_dump($z);
+
+                $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
+                $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
+                $ter=$xy;
+                while ($row = $pre->fetch()) {
+                    $ter = $row['idtype'];
+                    //break;
+                }
+                var_dump($ter);
+                
+                if ($zx) {
+                    $requete = "UPDATE Boursier SET idbour=:idbour, idEtu=:idEtu, idtype=:idtype  where idbour=:idbour";
+                    $res = $this->getPDO()->prepare($requete);
+                    $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idtype' => $ter));
+                    var_dump($donne);
+                }
             }
         }
         elseif (get_class($objet) == "Loger") {
-            $pre = $this->getPDO()->prepare("select * from Boursier where Boursier.idEtu=:idEtu");
+
+            $pre = $this->getPDO()->prepare("select * from NonBoursier where NonBoursier.idEtu=:idEtu");
             $zx = $pre->execute(array(':idEtu' => $y));
             $z=$zx;
             while ($row = $pre->fetch()) {
-                $z = $row['idbour'];
+                $z = $row['idEtu'];
                 //break;
             }
             var_dump($z);
+            
 
-            $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
-            $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
-            $ter=$xy;
-            while ($row = $pre1->fetch()) {
-                $ter = $row['idtype'];
-                //break;
-            }
-            var_dump($ter);
-            if ($zx) {
-                $requete = "UPDATE Boursier SET idbour=:idbour, idEtu=:idEtu, idtype=:idtype  where idbour=:idbour";
+            if ($z!=0 || $z!=NULL) {
+                $requete = "DELETE FROM NonBoursier where idEtu=:idEtu";
+                $stmt = $this->getPDO()->prepare($requete);
+                $resu = $stmt->execute(array(':idEtu' =>$z));
+                var_dump($resu);
+
+                $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
+                $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
+                $ter=$xy;
+                while ($row = $pre1->fetch()) {
+                    $ter = $row['idtype'];
+                    //break;
+                }
+                var_dump($ter);
+
+                $requete = "INSERT INTO Boursier (idEtu,idtype) VALUE (?,?)";
                 $res = $this->getPDO()->prepare($requete);
-                $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idtype' => $ter));
-                var_dump($donne);
-            }
+                $res->execute(array($y, $ter));
 
-            $res = $this->getPDO()->prepare("select * from Batiment where numbat=:numbat");
-            $don = $res->execute(array(':numbat' => $objet->getBatiment()));
-            $idbat=$don;
-            while ($row = $res->fetch()) {
-                $idbat = $row['idbat'];
-                //break;
-            }
-            var_dump($idbat);
+                $res = $this->getPDO()->prepare("select idbour from Boursier order by idEtu DESC");
+                $idboursier = $res->execute(array());
+                while ($row = $res->fetch()) {
+                    $idboursier = $row['idbour'];
+                    break;
+                }
 
-            $pre2 = $this->getPDO()->prepare("select * from Chambre where numcham=:numcham AND idbat=:idbat");
-            $xyz = $pre2->execute(array(':numcham' => $objet->getChambre(), ':idbat' => $idbat));
-            $terre=$xyz;
-            while ($row = $pre2->fetch()) {
-                $terre = $row['idcham'];
-                //break;
-            }
-            var_dump($terre);
+                //var_dump($idboursier);
 
-            if ($zx) {
-                $requete = "UPDATE Loger SET idbour=:idbour, idEtu=:idEtu, idcham=:idcham  where idbour=:idbour";
+                $res = $this->getPDO()->prepare("select idbat from Batiment where numbat=:numbat");
+                $idbatiment = $res->execute(array(':numbat' => $objet->getBatiment()));
+
+                while ($row = $res->fetch()) {
+                    $idbatiment = $row['idbat'];
+                    break;
+                }
+
+                //var_dump($idboursier);
+
+                $res = $this->getPDO()->prepare("select idcham from Chambre where numcham=:numcham and idbat=:idbat");
+                $idchambre = $res->execute(array(':numcham' => $objet->getChambre(), ':idbat' => $idbatiment));
+
+                while ($row = $res->fetch()) {
+                    $idchambre = $row['idcham'];
+                    break;
+                }
+
+                //var_dump($idchambre);
+
+                $requete = "INSERT INTO Loger (idbour,idEtu, idcham) VALUE (?,?,?)";
                 $res = $this->getPDO()->prepare($requete);
-                $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idcham' => $terre));
-                var_dump($donne);
+                $donnee = $res->execute(array($idboursier, $y, $idchambre));
+                //var_dump($donnee);
+
+                return $donnee;
+
+            }else {
+                $pres = $this->getPDO()->prepare("select * from Loger where Loger.idEtu=:idEtu");
+                $moi = $pres->execute(array(':idEtu' => $y));
+                $log=$moi;
+                while ($row = $pre->fetch()) {
+                    $log = $row['idEtu'];
+                    //break;
+                }
+                var_dump($log);
+
+                if ($log!=0 || $log != NULL) {
+                    $pre = $this->getPDO()->prepare("select * from Boursier where Boursier.idEtu=:idEtu");
+                    $zx = $pre->execute(array(':idEtu' => $y));
+                    $z=$zx;
+                    while ($row = $pre->fetch()) {
+                        $z = $row['idbour'];
+                        //break;
+                    }
+                    var_dump($z);
+
+                    $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
+                    $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
+                    $ter=$xy;
+                    while ($row = $pre1->fetch()) {
+                        $ter = $row['idtype'];
+                        //break;
+                    }
+                    var_dump($ter);
+                    if ($zx) {
+                        $requete = "UPDATE Boursier SET idbour=:idbour, idEtu=:idEtu, idtype=:idtype  where idbour=:idbour";
+                        $res = $this->getPDO()->prepare($requete);
+                        $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idtype' => $ter));
+                        var_dump($donne);
+                    }
+
+                    $res = $this->getPDO()->prepare("select * from Batiment where numbat=:numbat");
+                    $don = $res->execute(array(':numbat' => $objet->getBatiment()));
+                    $idbat=$don;
+                    while ($row = $res->fetch()) {
+                        $idbat = $row['idbat'];
+                        //break;
+                    }
+                    var_dump($idbat);
+
+                    $pre2 = $this->getPDO()->prepare("select * from Chambre where numcham=:numcham AND idbat=:idbat");
+                    $xyz = $pre2->execute(array(':numcham' => $objet->getChambre(), ':idbat' => $idbat));
+                    $terre=$xyz;
+                    while ($row = $pre2->fetch()) {
+                        $terre = $row['idcham'];
+                        //break;
+                    }
+                    var_dump($terre);
+
+                    if ($zx) {
+                        $requete = "UPDATE Loger SET idbour=:idbour, idEtu=:idEtu, idcham=:idcham  where idbour=:idbour";
+                        $res = $this->getPDO()->prepare($requete);
+                        $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idcham' => $terre));
+                        var_dump($donne);
+                    }
+                }
+                else {
+                    $pre = $this->getPDO()->prepare("select * from Boursier where Boursier.idEtu=:idEtu");
+                    $zx = $pre->execute(array(':idEtu' => $y));
+                    $z=$zx;
+                    while ($row = $pre->fetch()) {
+                        $z = $row['idbour'];
+                        //break;
+                    }
+                    var_dump($z);
+
+                    $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
+                    $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
+                    $ter=$xy;
+                    while ($row = $pre1->fetch()) {
+                        $ter = $row['idtype'];
+                        //break;
+                    }
+                    var_dump($ter);
+                    if ($zx) {
+                        $requete = "UPDATE Boursier SET idbour=:idbour, idEtu=:idEtu, idtype=:idtype  where idbour=:idbour";
+                        $res = $this->getPDO()->prepare($requete);
+                        $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idtype' => $ter));
+                        var_dump($donne);
+                    }
+
+                    $res = $this->getPDO()->prepare("select * from Batiment where numbat=:numbat");
+                    $don = $res->execute(array(':numbat' => $objet->getBatiment()));
+                    $idbat=$don;
+                    while ($row = $res->fetch()) {
+                        $idbat = $row['idbat'];
+                        //break;
+                    }
+                    var_dump($idbat);
+
+                    $pre2 = $this->getPDO()->prepare("select * from Chambre where numcham=:numcham AND idbat=:idbat");
+                    $xyz = $pre2->execute(array(':numcham' => $objet->getChambre(), ':idbat' => $idbat));
+                    $terre=$xyz;
+                    while ($row = $pre2->fetch()) {
+                        $terre = $row['idcham'];
+                        //break;
+                    }
+                    var_dump($terre);
+
+                    if ($zx) {
+                        $requete = "INSERT INTO Loger (idbour=:idbour ,idEtu=:idEtu, idcham=:idcham  VALUES(?,?,?)";
+                        $res = $this->getPDO()->prepare($requete);
+                        $donne = $res->execute(array($z, $y,$terre));
+                        var_dump($donne);
+                    }
+                }
             }
         }
     }
