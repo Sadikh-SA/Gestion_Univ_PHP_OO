@@ -117,11 +117,11 @@
 			</div>
 			<div class="w3-row w3-section" >
 				<div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-line-chart ">Boursier</i>
-					<input class="w3-input w3-border" id="boursier" value="Boursier" value="<?php if(isset($_POST['bourse']))echo $_POST['bourse']?>" name="bourse" type="radio" required>
+					<input class="w3-input w3-border" id="boursier" name="bourse" type="radio" value="Boursier" <?php if(isset($_POST["bourse"]) && $_POST["bourse"]=="Boursier") echo "checked=\"checked\"" ?> required>
 				</div>
 
 				<div class="w3-col" style="width:50px; margin-left: 50%;"><i class="w3-xxlarge fa fa-line-chart ">NonBoursier</i>
-					<input class="w3-input w3-border" id="nonboursier" value="NonBoursier" name="bourse" value="<?php if(isset($_POST['bourse']))echo $_POST['bourse']?>" type="radio" required>
+					<input class="w3-input w3-border" id="nonboursier" name="bourse" value="NonBoursier" <?php if(isset($_POST["bourse"]) && $_POST["bourse"]=="NonBoursier") echo "checked=\"checked\"" ?> type="radio" required>
 				</div>
 				
 			</div>
@@ -178,17 +178,8 @@
 					while ($a = $res->fetch()) {
 						echo '<option id="bat" value="'.$a['numbat'].'">'.$a['numbat'].'</option>';
 					}
-					/*if (isset($_POST['batiment'])) {
-						$e = $_POST['batiment'];
-					}
-					var_dump($e);*/
-					
-					
+						
 						?>
-						<script>
-							var bat = document.getElementById("bat").value;
-							//alert(bat);
-						</script>
 					</select>
 				</div>
 			</div>
@@ -201,13 +192,12 @@
 							
 						</script>
 						<?php
-						
-							include '../Classes/ServiceEtudiant.php';
+							/*include '../Classes/ServiceEtudiant.php';
 							$test = new Service();
 							$x=$test->chambre($bat);
 							while ($a = $x->fetch() ) {
 								echo '<option value="'.$a['numcham'].'">'.$a['numcham'].'</option>';
-							}
+							}*/
 						?>
 					</select>
 				</div>
@@ -249,8 +239,8 @@
 				
 					if ($bourse =="Boursier" && $loger=="NonLoger") {
 						$type = $_POST['situation'];
-						$donne = new Boursier($matricule,$nom,$prenom,$tel,$mail,$ddn,$type);
-						$insert = $test->add($donne);
+						$donnes = new Boursier($matricule,$nom,$prenom,$tel,$mail,$ddn,$type);
+						$insert = $test->add($donnes);
 						if ($insert) {
 							echo "<h2 class='reponse'>INSERTION D'UN ETUDIANT BOURSIER ET NON LOGER RÉUSSIE</h2>";
 						} else {
@@ -261,8 +251,8 @@
 					elseif ($bourse =="Boursier" && $loger =="Loger") {
 						$chambre = $_POST['chambre'];
 						$batiment = $_POST['batiment'];
-						$donne = new Loger($matricule,$nom,$prenom,$tel,$mail,$ddn,$type,$chambre,$batiment);
-						$insert = $test->add($donne);
+						$donness = new Loger($matricule,$nom,$prenom,$tel,$mail,$ddn,$type,$chambre,$batiment);
+						$insert = $test->add($donness);
 						if ($insert) {
 							echo "<h2 class='reponse'>INSERTION D'UN ETUDIANT BOURSIER ET LOGER RÉUSSIE</h2>";
 						} else {

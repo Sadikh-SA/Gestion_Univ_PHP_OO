@@ -2,6 +2,8 @@
 <html lang="fr">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../Bootstrap/menu.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css">
@@ -21,13 +23,21 @@
         }
     </style>
 </head> 
-<body style="background: #F2F2F2;" >
-<div class="w3-bar w3-light-grey w3-border w3-xxlarge" style="width:100%; height: 100px; margin-top:1%;">
-    <a href="index.php" class="w3-bar-item w3-button" style=" height: 100px; width:25%;"><i class="fa fa-graduation-cap" style="margin-top:20px;"></i></a>
-    <a href="lister.php" class="w3-bar-item w3-button w3-green" style="height: 100px; width:25%; border: 1px solid;"><i class="fa fa-list-alt" style="margin-top:20px;">    LISTER  </i></a>
-    <a href="ajouter.php" class="w3-bar-item w3-button " style="height: 100px; width:25%; border: 1px solid;"><i class="fa fa-plus" style="margin-top:20px;">    AJOUTER   </i></a>
-    <a href="rechercher.php" class="w3-bar-item w3-button" style="height: 100px; width:25%; border: 1px solid;"><i class="fa fa-search" style="margin-top:20px;">    RECHERCHER   </i></a>
-</div>
+<body style="background:none;">
+    <header>
+        <a href="#" class="logo">LOGO</a>
+        <div class="menu-toggle"></div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">LISTER</a></li>
+                <li><a href="ajout.php">AJOUTER</a></li>
+                <li><a href="#">MODIFIER</a></li>
+                <li><a href="#">SUPPRIMER</a></li>
+                <li><a href="rechercher.php">RECHERCHER</a></li>
+            </ul>
+        </nav>
+        <div class="clearfix"></div>
+    </header>
 
 
 	<div style="margin-top: 3%;">
@@ -63,8 +73,8 @@
 							$statut = $row['matricule'];
 							$y= $test->statut($statut);
 							echo "<td>".$y."</td>";
-                            echo'<td align="center"><button class="btn btn-primary">modifier</button></td>';
-                            echo'<td align="center"><button class="btn btn-danger">supprimer</button></td>';
+                            echo'<td align="center"><a href="modifier.php?id='.$row['idEtu'].'"><button class="btn btn-primary">modifier</button></a></td>';
+                            echo'<td align="center"><a href="supprimer.php?id='.$row['idEtu'].'"><button class="btn btn-danger">supprimer</button></a></td>';
                             echo "</tr>";
                         }
 					?>
@@ -107,8 +117,24 @@
 </body>
 </html>
 
+<script src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous">
+</script>
+
 <script>
     $(document).ready(function() {
         $('#example').DataTable();
     } );
+</script>
+
+
+
+<script>
+    $(document).ready(function(){
+        $('.menu-toggle').click(function(){
+            $('.menu-toggle').toggleClass('active')
+            $('nav').toggleClass('active')
+        });
+    });
 </script>

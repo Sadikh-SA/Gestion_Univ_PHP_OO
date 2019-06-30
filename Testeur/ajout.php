@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../Bootstrap/menu.css">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
-    <title>Modifier</title>
+    <title>Document</title>
     <style>
         .reponse{
 			text-align: center;
@@ -27,40 +27,27 @@
         <div class="menu-toggle"></div>
         <nav>
             <ul>
-                <li><a href="lister.php">LISTER</a></li>
-                <li><a href="ajout.php">AJOUTER</a></li>
-                <li><a href="#" class="active">MODIFIER</a></li>
+                <li><a href="lister">LISTER</a></li>
+                <li><a href="#" class="active">AJOUTER</a></li>
+                <li><a href="#">MODIFIER</a></li>
                 <li><a href="#">SUPPRIMER</a></li>
                 <li><a href="rechercher.php">RECHERCHER</a></li>
             </ul>
         </nav>
         <div class="clearfix"></div>
-	</header>
-	
-	<?php
-		$id=$_GET['id'];
-		$pdo = new PDO("mysql:host=127.0.0.1;dbname=MiniProjetPHPOO","root","Moimeme2018");
-		$requete = "SELECT matricule, nom, prenom, tel, mail, ddn, adresse from Etudiant,NonBoursier, Boursier where NonBoursier.idEtu='$id' OR Boursier.idEtu='$id'";
-		$res = $pdo->prepare($requete);
-		$donne = $res->execute();
-		//var_dump($donne);
-		while ($a = $res->fetch()) {
-			
-		//var_dump($a['nom']);
-		//var_dump($a['prenom']);
-	?>
-
-    <form action="#" method="post" class="box" style="">
-        <h1>MODIFIER ETUDIANT</h1>
-        <input type="text" name="matricule" id="" value="<?php echo $a['matricule'] ?>" placeholder="Matricule">
-        <input type="text" name="nom" id="" value="<?php echo $a['nom'] ?>" placeholder="Votre Nom">
-        <input type="text" name="prenom" id="" value="<?php echo $a['prenom'] ?>" placeholder="Votre Prénom">
-        <input type="number" name="tel" id="" value="<?php echo $a['tel'] ?>" placeholder="Votre Téléphone">
-        <input type="email" name="mail" id="" value="<?php echo $a['mail'] ?>" placeholder="Votre Mail">
-        <input type="date" name="ddn" id="" value="<?php echo $a['ddn'] ?>" >
+    </header>
+<div class="left">
+    <form action="#" method="post" class="box">
+        <h1>AJOUTER ETUDIANT</h1>
+        <input type="text" name="matricule" id="" placeholder="Matricule">
+        <input type="text" name="nom" id="" placeholder="Votre Nom">
+        <input type="text" name="prenom" id="" placeholder="Votre Prénom">
+        <input type="number" name="tel" id="" placeholder="Votre Téléphone">
+        <input type="email" name="mail" id="" placeholder="Votre Mail">
+        <input type="date" name="ddn" id="" >
         <label for="" id="boursiers">Boursier</label> <input type="radio" id="boursier" name="bourse" value="Boursier">
         <label for="" id="nonboursiers">Non Boursier</label> <input type="radio" id="nonboursier" name="bourse" value="NonBoursier">
-        <input type="text" name="adresse" id="adresse" value="<?php echo $a['adresse'] ?>" placeholder="Votre Adresse">
+        <input type="text" name="adresse" id="adresse" placeholder="Votre Adresse">
         <select id="type" name="situation" placeholder="Votre Adresse please" >
 			<?php 
 					
@@ -95,10 +82,13 @@
         <input type="text" name="chambre" id="chambre" placeholder="Chambre">
         <input type="submit" name="submit" value="Envoyer">
     </form>
+</div>
+<div class="right">
 
-
+</div>
     <?php
-		}
+
+
 			if (isset($_POST['submit'])) {
 				$matricule=$_POST['matricule'];
 				$nom=$_POST['nom'];
@@ -115,7 +105,7 @@
 				if ($bourse == "NonBoursier") {
 					$adresse=$_POST['adresse'];
 					$donne = new NonBoursier($matricule,$nom,$prenom,$tel,$mail,$ddn,$adresse);
-					$insert = $test->update($donne,$matricule);
+					$insert = $test->add($donne);
 					if ($insert) {
 						echo "<h2 class='reponse'>INSERTION D'UN ETUDIANT NON BOURSIER RÉUSSIE</h2>";
 					} else {
@@ -129,7 +119,7 @@
 					if ($bourse =="Boursier" && $loger=="NonLoger") {
 						$type = $_POST['situation'];
 						$donnes = new Boursier($matricule,$nom,$prenom,$tel,$mail,$ddn,$type);
-						$insert = $test->update($donnes,$matricule);
+						$insert = $test->add($donnes);
 						if ($insert) {
 							echo "<h2 class='reponse'>INSERTION D'UN ETUDIANT BOURSIER ET NON LOGER RÉUSSIE</h2>";
 						} else {
@@ -140,9 +130,8 @@
 					elseif ($bourse =="Boursier" && $loger =="Loger") {
 						$chambre = $_POST['chambre'];
 						$batiment = $_POST['batiment'];
-						$type = $_POST['situation'];
 						$donness = new Loger($matricule,$nom,$prenom,$tel,$mail,$ddn,$type,$chambre,$batiment);
-						$insert = $test->update($donness,$matricule);
+						$insert = $test->add($donness);
 						if ($insert) {
 							echo "<h2 class='reponse'>INSERTION D'UN ETUDIANT BOURSIER ET LOGER RÉUSSIE</h2>";
 						} else {

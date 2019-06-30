@@ -186,7 +186,7 @@ class Service
         if ($table == "Batiment") {
             $requete = "INSERT INTO $table (numbat) VALUE (?)";
             $res = $this->getPDO()->prepare($requete);
-            $yx = $res->execute();
+            $yx = $res->execute(array());
         } else {
             # code...
         }
@@ -579,5 +579,47 @@ class Service
                 }
             }
         }
+    }
+
+    public function Supprimer(Etudiant $objet, $matricule) {
+        $requete = "SELECT idEtu FROM Etudiant WHERE matricule=:matricule";
+        $res = $this->getPDO()->prepare($requete);
+        $idetudiant=$res->execute(array(':matricule' => $matricule));
+        var_dump($idetudiant);
+        while ($row = $res->fetch()) {
+            $idetudiant = $row['idEtu'];
+        }
+        var_dump($idetudiant);
+        if (get_class($objet) == "NonBoursier" || get_class($objet) == "Boursier") {
+            $table = get_class($objet);
+            $requete = "DELETE FROM $table where idEtu=$idetudiant";
+            $res = $this->getPDO()->prepare($requete);
+            $supp=$res->execute();
+            var_dump($supp);
+
+            $sql = "DELETE FROM Etudiant where idEtu='$idetudiant'";
+            $test = $this->getPDO()->prepare($sql);
+            $supp1=$test->execute();
+            var_dump($supp1);
+        } elseif (get_class($objet) == "Loger") {
+
+            $table = get_class($objet);
+
+            $requete = "DELETE FROM Loger where idEtu=$idetudiant";
+            $res = $this->getPDO()->prepare($requete);
+            $supp=$res->execute();
+            var_dump($supp);
+
+            $req = "DELETE FROM Boursier where idEtu=$idetudiant";
+            $res1 = $this->getPDO()->prepare($req);
+            $supp1=$res1->execute();
+            var_dump($supp1);
+
+            $sql = "DELETE FROM Etudiant where idEtu=$idetudiant";
+            $test = $this->getPDO()->prepare($sql);
+            $supp2=$test->execute();
+            var_dump($supp2);
+        }
+        
     }
 }
