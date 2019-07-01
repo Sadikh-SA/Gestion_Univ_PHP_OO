@@ -94,6 +94,7 @@
 <div class="right">
 
 </div>
+
     <?php
 
 
@@ -154,6 +155,7 @@
 
 
 		?>
+
 </body>
 </html>
 

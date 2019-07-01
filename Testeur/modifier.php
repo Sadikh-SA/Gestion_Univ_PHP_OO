@@ -51,7 +51,7 @@
 	
 	<?php
 		$id=$_GET['id'];
-		$requete = "SELECT matricule, nom, prenom, tel, mail, ddn from Etudiant,NonBoursier where NonBoursier.idEtu='$id' and NonBoursier.idEtu=Etudiant.idEtu";
+		$requete = "SELECT matricule, nom, prenom, tel, mail, ddn from Etudiant,NonBoursier,Boursier where (NonBoursier.idEtu='$id' and NonBoursier.idEtu=Etudiant.idEtu) OR (Boursier.idEtu='$id' and Boursier.idEtu=Etudiant.idEtu)";
 		$res = $pdo->prepare($requete);
 		$donne = $res->execute();
 		//var_dump($donne);
