@@ -1,3 +1,9 @@
+<?php
+	include '../Classes/ServiceEtudiant.php';
+	$test = new Service();	
+	$pdo = $test->getPDO();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,8 +51,7 @@
 	
 	<?php
 		$id=$_GET['id'];
-		$pdo = new PDO("mysql:host=127.0.0.1;dbname=MiniProjetPHPOO","root","Moimeme2018");
-		$requete = "SELECT matricule, nom, prenom, tel, mail, ddn from Etudiant,NonBoursier, Boursier where NonBoursier.idEtu=$id OR Boursier.idEtu=$id";
+		$requete = "SELECT matricule, nom, prenom, tel, mail, ddn from Etudiant,NonBoursier where NonBoursier.idEtu='$id' and NonBoursier.idEtu=Etudiant.idEtu";
 		$res = $pdo->prepare($requete);
 		$donne = $res->execute();
 		//var_dump($donne);
@@ -69,8 +74,7 @@
         <input type="text" name="adresse" id="adresse" value="<?php ?>" placeholder="Votre Adresse">
         <select id="type" name="situation" placeholder="Votre Adresse please" >
 			<?php 
-					
-				$pdo = new PDO("mysql:host=127.0.0.1;dbname=MiniProjetPHPOO","root","Moimeme2018");
+				
 				$requete = "select * from Situation";
 				$res = $pdo->prepare($requete);
 				$donnee = $res ->execute();
@@ -86,8 +90,6 @@
         <label for="" id="nloger">Non Loger</label><input type="radio" id="nonloger" name="loger" value="NonLoger">
         <select id="batiment" name="batiment" placeholder="Votre Adresse please" >
 		    <?php 
-					
-                $pdo = new PDO("mysql:host=127.0.0.1;dbname=MiniProjetPHPOO", "root","Moimeme2018");
                 $requete = "select * from Batiment";
                 $res = $pdo->prepare($requete);
                 $donnee = $res ->execute();
@@ -116,8 +118,8 @@
 				
 			
 
-				include '../Classes/ServiceEtudiant.php';
-				$test = new Service();		
+				// include '../Classes/ServiceEtudiant.php';
+				// $test = new Service();		
 				if ($bourse == "NonBoursier") {
 					$adresse=$_POST['adresse'];
 					$donne = new NonBoursier($matricule,$nom,$prenom,$tel,$mail,$ddn,$adresse);

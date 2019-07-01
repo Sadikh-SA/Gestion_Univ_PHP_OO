@@ -1,3 +1,9 @@
+<?php
+	include '../Classes/ServiceEtudiant.php';
+	$test = new Service();	
+	$pdo = $test->getPDO();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,8 +62,6 @@
         <input type="text" name="adresse" id="adresse" placeholder="Votre Adresse">
         <select id="type" name="situation" placeholder="Votre Adresse please" >
 			<?php 
-					
-				$pdo = new PDO("mysql:host=127.0.0.1;dbname=MiniProjetPHPOO","root","Moimeme2018");
 				$requete = "select * from Situation";
 				$res = $pdo->prepare($requete);
 				$donnee = $res ->execute();
@@ -73,8 +77,6 @@
         <label for="" id="nloger">Non Loger</label><input type="radio" id="nonloger" name="loger" value="NonLoger">
         <select id="batiment" name="batiment" placeholder="Votre Adresse please" >
 		    <?php 
-					
-                $pdo = new PDO("mysql:host=127.0.0.1;dbname=MiniProjetPHPOO", "root","Moimeme2018");
                 $requete = "select * from Batiment";
                 $res = $pdo->prepare($requete);
                 $donnee = $res ->execute();
@@ -106,8 +108,8 @@
 				
 			
 
-				include '../Classes/ServiceEtudiant.php';
-				$test = new Service();		
+				// include '../Classes/ServiceEtudiant.php';
+				// $test = new Service();		
 				if ($bourse == "NonBoursier") {
 					$adresse=$_POST['adresse'];
 					$donne = new NonBoursier($matricule,$nom,$prenom,$tel,$mail,$ddn,$adresse);
@@ -136,6 +138,7 @@
 					elseif ($bourse =="Boursier" && $loger =="Loger") {
 						$chambre = $_POST['chambre'];
 						$batiment = $_POST['batiment'];
+						$type = $_POST['situation'];
 						$donness = new Loger($matricule,$nom,$prenom,$tel,$mail,$ddn,$type,$chambre,$batiment);
 						$insert = $test->add($donness);
 						if ($insert) {

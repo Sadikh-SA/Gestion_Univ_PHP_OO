@@ -320,14 +320,14 @@ class Service
             }
         }elseif (get_class($objet) == "Boursier") {
 
-            $pres = $this->getPDO()->prepare("select * from Loger where Loger.idEtu=:idEtu");
+           /* $pres = $this->getPDO()->prepare("select * from Loger where Loger.idEtu=:idEtu");
             $moi = $pres->execute(array(':idEtu' => $y));
             $log=$moi;
             while ($row = $pre->fetch()) {
                 $log = $row['idEtu'];
                 //break;
             }
-            var_dump($log);
+            var_dump($log);*/
             
             $pre = $this->getPDO()->prepare("select * from NonBoursier where NonBoursier.idEtu=:idEtu");
             $zx = $pre->execute(array(':idEtu' => $y));

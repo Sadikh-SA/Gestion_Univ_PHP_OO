@@ -1,9 +1,11 @@
 <?php
     $id = $_GET['id'];
-
-    $pdo = new PDO("mysql:host=127.0.0.1;dbname=MiniProjetPHPOO","root","Moimeme2018");
-		$requete = "SELECT matricule, nom, prenom, tel, mail, ddn from Etudiant,NonBoursier where NonBoursier.idEtu='$id'";
-		$res = $pdo->prepare($requete);
+	include '../Classes/ServiceEtudiant.php';
+	$test = new Service();	
+    $pdo = $test->getPDO();
+		//$requete = "SELECT matricule, nom, prenom, tel, mail, ddn from Etudiant,NonBoursier where NonBoursier.idEtu='$id'";
+        $requete="SELECT matricule, nom, prenom, tel, mail, ddn from Etudiant,NonBoursier,Boursier,Loger where (NonBoursier.idEtu='$id' and NonBoursier.idEtu=Etudiant.idEtu) OR (Boursier.idEtu='$id' and Boursier.idEtu=Etudiant.idEtu) OR (Loger.idEtu='$id' and Loger.idEtu=Etudiant.idEtu)";
+        $res = $pdo->prepare($requete);
 		$donnee = $res ->execute();
         while($a = $res->fetch()){
             $matricule = $a['matricule'];
@@ -31,7 +33,7 @@
             $ddn = $a['ddn'];
 
             $requete = "select libelle from Situation where idtype=:idtype";
-            $res = $this->getPDO()->prepare($requete);
+            $res = $pdo->prepare($requete);
 
             $z = $res->execute(array(':idtype' => $a['idtype']));
             while ($row = $res->fetch()) {
@@ -44,13 +46,61 @@
         }
         */
 
-    include '../Classes/ServiceEtudiant.php';
-    $test = new Service();	
+    // include '../Classes/ServiceEtudiant.php';
+    // $test = new Service();	
 
+        $requete = "select * from Etudiant,Boursier where Boursier.idEtu='$id' and Boursier.idEtu=Etudiant.idEtu";
+        $res = $pdo->query($requete);
+        $bour = $res->fetch();
+        while ($a = $res->fetch()) {
+            $bour = $a['idEtu'];
+            $type = $a['idtype'];
+        }
+        $sql = "select * from Etudiant,NonBoursier where NonBoursier.idEtu='$id' and NonBoursier.idEtu=Etudiant.idEtu";
+        $pres = $pdo->query($sql);
+        $nobour = $pres->fetch();
+        while ($b = $pres->fetch()) {
+            $nobour = $b['idEtu'];
+            $adresse = $b['adresse'];
+        }
 
-    $etudiant = new NonBoursier($matricule,$nom,$prenom,$tel,$mail,$ddn,$adresse);
-    //$matricule="SA911123";
-    //$etudiant = new Loger($matricule,"Camara","Babs","774625521","babs.Camara@gmail.com","1992-07-14","demi-pension","25","Campus A");
-    $test->Supprimer($etudiant,$matricule);
-    //header('location: lister.php');
+        $test = "select * from Etudiant,Loger where Loger.idEtu='$id' and and Loger.idEtu=Etudiant.idEtu";
+        $pre = $pdo->query($sql);
+        $loge = $pre->fetch();
+        while ($c = $pre->fetch()) {
+            $loge = $c['idEtu'];
+            
+        }
+
+        if ($bour!=null) {
+            $pre1 = $pdo->prepare("select * from Situation where idtype=:idtype");
+                $xy = $pre1->execute(array(':idtype' =>$type));
+                $ter=$xy;
+                while ($row = $pre->fetch()) {
+                    $ter = $row['libelle'];
+                    //break;
+                }
+                //var_dump($ter);
+                $etudiant = new Boursier($matricule,$nom,$prenom,$tel,$mail,$ddn,$ter);
+                //$matricule="SA911123";
+                //$etudiant = new Loger($matricule,"Camara","Babs","774625521","babs.Camara@gmail.com","1992-07-14","demi-pension","25","Campus A");
+                $test->Supprimer($etudiant,$matricule);
+
+        } elseif($nobour!=null) {
+            $etudiant = new NonBoursier($matricule,$nom,$prenom,$tel,$mail,$ddn,$adresse);
+            //$matricule="SA911123";
+            //$etudiant = new Loger($matricule,"Camara","Babs","774625521","babs.Camara@gmail.com","1992-07-14","demi-pension","25","Campus A");
+            $test->Supprimer($etudiant,$matricule);
+    
+            
+        }
+        elseif ($loge!=null) {
+            $etudiant = new Loger($matricule,$nom,$prenom,$tel,$mail,$ddn,$adresse);
+            //$matricule="SA911123";
+            //$etudiant = new Loger($matricule,"Camara","Babs","774625521","babs.Camara@gmail.com","1992-07-14","demi-pension","25","Campus A");
+            $test->Supprimer($etudiant,$matricule);
+        }
+        
+    
+    header('location: lister.php');
 ?>
