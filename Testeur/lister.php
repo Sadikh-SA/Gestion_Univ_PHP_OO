@@ -14,6 +14,15 @@
 	<script src="https://cdn.datatables.net/plug-ins/1.10.19/i18n/French.json"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $('.menu-toggle').click(function(){
+            $('.menu-toggle').toggleClass('active')
+            $('nav').toggleClass('active')
+        });
+    });
+</script>
     <title>Lister l'ensemble des Etudiants</title>
     <style>
         .footer {
@@ -33,7 +42,13 @@
                 <li><a href="ajout.php">AJOUTER</a></li>
                 <li><a href="#">MODIFIER</a></li>
                 <li><a href="#">SUPPRIMER</a></li>
-                <li><a href="rechercher.php">RECHERCHER</a></li>
+                <li><a href="rechercher.php">RECHERCHER</a>
+                    <ul class="sousmenu">
+                      <li><a href="nonboursier.php">Etudiant Non Boursier</a></li>
+                      <li><a href="rechercheboursiernonloger.php">Etudiant Boursier Non Loger</a></li>
+                      <li><a href="rechercherloger.php">Etudiant Boursier & Loger</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <div class="clearfix"></div>
@@ -41,7 +56,7 @@
 
 
 	<div style="margin-top: 3%;">
-        <table id="example" class="table table-striped table-bordered">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>       
 					<th>Matricule</th>
@@ -117,24 +132,11 @@
 </body>
 </html>
 
-<script src="https://code.jquery.com/jquery-3.4.1.js"
-  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-  crossorigin="anonymous">
-</script>
 
 <script>
-    $(document).ready(function() {
-        $('#example').DataTable();
-    } );
+    	
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
 </script>
 
-
-
-<script>
-    $(document).ready(function(){
-        $('.menu-toggle').click(function(){
-            $('.menu-toggle').toggleClass('active')
-            $('nav').toggleClass('active')
-        });
-    });
-</script>

@@ -31,7 +31,13 @@
                 <li><a href="ajout.php">AJOUTER</a></li>
                 <li><a href="#" class="active">MODIFIER</a></li>
                 <li><a href="#">SUPPRIMER</a></li>
-                <li><a href="rechercher.php">RECHERCHER</a></li>
+                <li><a href="rechercher.php">RECHERCHER</a>
+                    <ul class="sousmenu">
+                      <li><a href="nonboursier.php">Etudiant Non Boursier</a></li>
+                      <li><a href="rechercheboursiernonloger.php">Etudiant Boursier Non Loger</a></li>
+                      <li><a href="rechercherloger.php">Etudiant Boursier & Loger</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <div class="clearfix"></div>
@@ -40,7 +46,7 @@
 	<?php
 		$id=$_GET['id'];
 		$pdo = new PDO("mysql:host=127.0.0.1;dbname=MiniProjetPHPOO","root","Moimeme2018");
-		$requete = "SELECT matricule, nom, prenom, tel, mail, ddn, adresse from Etudiant,NonBoursier, Boursier where NonBoursier.idEtu='$id' OR Boursier.idEtu='$id'";
+		$requete = "SELECT matricule, nom, prenom, tel, mail, ddn from Etudiant,NonBoursier, Boursier where NonBoursier.idEtu=$id OR Boursier.idEtu=$id";
 		$res = $pdo->prepare($requete);
 		$donne = $res->execute();
 		//var_dump($donne);
@@ -60,7 +66,7 @@
         <input type="date" name="ddn" id="" value="<?php echo $a['ddn'] ?>" >
         <label for="" id="boursiers">Boursier</label> <input type="radio" id="boursier" name="bourse" value="Boursier">
         <label for="" id="nonboursiers">Non Boursier</label> <input type="radio" id="nonboursier" name="bourse" value="NonBoursier">
-        <input type="text" name="adresse" id="adresse" value="<?php echo $a['adresse'] ?>" placeholder="Votre Adresse">
+        <input type="text" name="adresse" id="adresse" value="<?php ?>" placeholder="Votre Adresse">
         <select id="type" name="situation" placeholder="Votre Adresse please" >
 			<?php 
 					

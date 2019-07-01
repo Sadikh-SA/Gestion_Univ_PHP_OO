@@ -27,11 +27,17 @@
         <div class="menu-toggle"></div>
         <nav>
             <ul>
-                <li><a href="lister">LISTER</a></li>
+                <li><a href="lister.php">LISTER</a></li>
                 <li><a href="#" class="active">AJOUTER</a></li>
                 <li><a href="#">MODIFIER</a></li>
                 <li><a href="#">SUPPRIMER</a></li>
-                <li><a href="rechercher.php">RECHERCHER</a></li>
+                <li><a href="rechercher.php">RECHERCHER</a>
+                    <ul class="sousmenu">
+                      <li><a href="nonboursier.php">Etudiant Non Boursier</a></li>
+                      <li><a href="rechercheboursiernonloger.php">Etudiant Boursier Non Loger</a></li>
+                      <li><a href="rechercherloger.php">Etudiant Boursier & Loger</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <div class="clearfix"></div>

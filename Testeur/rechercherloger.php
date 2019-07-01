@@ -3,9 +3,11 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="../Bootstrap/menu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../Bootstrap/css/bootstrap.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -21,18 +23,26 @@
     </style>
 </head> 
 <body style="background: #F2F2F2;" >
-    <div class="w3-bar w3-light-grey w3-border w3-xxlarge" style="width:100%; height: 100px; margin-top:1%;">
-        <a href="index.php" class="w3-bar-item w3-button" style=" height: 100px; width:25%;"><i class="fa fa-graduation-cap" style="margin-top:20px;"></i></a>
-        <a href="lister.php" class="w3-bar-item w3-button" style="height: 100px; width:25%; border: 1px solid;"><i class="fa fa-list-alt" style="margin-top:20px;">    LISTER  </i></a>
-        <a href="ajouter.php" class="w3-bar-item w3-button" style="height: 100px; width:25%; border: 1px solid;"><i class="fa fa-plus" style="margin-top:20px;">    AJOUTER   </i></a>
-        <a href="rechercher.php" class="w3-bar-item w3-button w3-green" style="height: 100px; width:25%; border: 1px solid;"><i class="fa fa-search" style="margin-top:20px;">    RECHERCHER   </i></a>
-    </div>
-    <div class="w3-bar w3-light-grey w3-border w3-xxlarge" style="width:100%; height: 70px; margin-top:1%; background: #ccc;">
-        <a href="rechercher.php" class="w3-bar-item w3-button" style=" height: 70px; width:20%; border: 1px solid; box-shadow: 5px 5px 5px 5px;"><i class="fa fa-graduation-cap" style="margin-top:10px;">Boursier</i></a>
-        <a href="#" class="w3-bar-item w3-button w3-green" style="height: 70px; width:20%; border: 1px solid; margin-left: 5%; box-shadow: 5px 5px 5px 5px;"><i class="fa fa-list-alt" style="margin-top:10px;">    Loger  </i></a>
-        <a href="rechercheboursiernonloger.php" class="w3-bar-item w3-button" style="height: 70px; width:20%; border: 1px solid; margin-left: 5%; box-shadow: 5px 5px 5px 5px;"><i class="fa fa-plus" style="margin-top: -12px;">    Boursier & Non Loger   </i></a>
-        <a href="nonboursier.php" class="w3-bar-item w3-button" style="height: 70px; width:20%; border: 1px solid; margin-left: 5%; border-radius: 5px 5px 5px 5px; box-shadow: 5px 5px 5px 5px;"><i class="fa fa-plus" style="margin-top:-12px;">    Non Boursier  </i></a>
-    </div>
+    <header>
+        <a href="#" class="logo">LOGO</a>
+        <div class="menu-toggle"></div>
+        <nav>
+            <ul>
+                <li><a href="lister.php">LISTER</a></li>
+                <li><a href="ajout.php">AJOUTER</a></li>
+                <li><a href="#">MODIFIER</a></li>
+                <li><a href="#">SUPPRIMER</a></li>
+                <li><a href="rechercher.php" class="active">RECHERCHER</a>
+                    <ul class="sousmenu">
+                      <li><a href="nonboursier.php">Etudiant Non Boursier</a></li>
+                      <li><a href="rechercheboursiernonloger.php">Etudiant Boursier Non Loger</a></li>
+                      <li><a href="rechercherloger.php">Etudiant Boursier & Loger</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="clearfix"></div>
+    </header>
 
 
 	<div style="margin-top: 3%;">
@@ -68,8 +78,8 @@
                 $statut = $row['matricule'];
                 $y= $test->statut($statut);
                 echo "<td>".$y."</td>";
-                echo'<td align="center"><button class="btn btn-primary">modifier</button></td>';
-                echo'<td align="center"><button class="btn btn-danger">supprimer</button></td>';
+                echo'<td align="center"><a href="modifier.php?id='.$row['idEtu'].'"><button class="btn btn-primary">modifier</button></a></td>';
+                  echo'<td align="center"><a onclick="return confirm("êtes vous sur de vouloir supprimer cette etudiant?")" href="supprimer.php?id='.$row['idEtu'].'"><button class="btn btn-danger">supprimer</button></a></td>';
               echo "</tr>";
             }
 					?>
