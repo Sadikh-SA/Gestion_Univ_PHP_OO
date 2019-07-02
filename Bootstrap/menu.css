@@ -195,7 +195,7 @@ nav li:hover ul li {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 568px) {
     .menu-toggle {
         display: block;
         width: 40px;

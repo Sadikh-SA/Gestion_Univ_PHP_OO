@@ -77,9 +77,9 @@ class Service
         $requete = "INSERT INTO Etudiant (matricule, nom, prenom, mail, tel, ddn) VALUE (?,?,?,?,?,?)";
         //$requete = "insert into Etudiant Set matricule=:matricule, nom=:nom, prenom=:prenom, mail=:mail, tel=:tel, ddn=:ddn";
         $res = $this->getPDO()->prepare($requete);
-        //var_dump($res);
+        ////var_dump($res);
         $yx = $res->execute(array($objet->getMatricule(), $objet->getNom(), $objet->getPrenom(), $objet->getMail(), $objet->getTel(), $objet->getDdn()));
-        //var_dump($donnee);
+        ////var_dump($donnee);
 
         $pre = $this->getPDO()->prepare("select idEtu from Etudiant order by idEtu DESC");
         $y = $pre->execute(array());
@@ -87,7 +87,7 @@ class Service
             $y = $row['idEtu'];
             break;
         }
-        //var_dump($y);
+        ////var_dump($y);
 
         if (get_class($objet) == "NonBoursier") {
             if ($yx) {
@@ -95,7 +95,7 @@ class Service
                 $res = $this->getPDO()->prepare($requete);
                 $donnee = $res->execute(array(':idEtu' => $y, ':Adresse' => $objet->getAdresse()));
                 //$donnee = $res->fetch(pdo::FETCH_ASSOC);
-                //var_dump($res);
+                ////var_dump($res);
                 return $donnee;
             }
         } elseif (get_class($objet) == "Boursier") {
@@ -109,11 +109,11 @@ class Service
                     $z = $row['idtype'];
                     break;
                 }
-                //var_dump($z);
+                ////var_dump($z);
 
                 $requete = "INSERT INTO Boursier (idEtu,idtype) VALUE (?,?)";
                 $res = $this->getPDO()->prepare($requete);
-                //var_dump($res);
+                ////var_dump($res);
                 $donnee = $res->execute(array($y, $z));
                 //$donnee = $res->fetch();
                 return $donnee;
@@ -140,7 +140,7 @@ class Service
                     break;
                 }
 
-                //var_dump($idboursier);
+                ////var_dump($idboursier);
 
                 $res = $this->getPDO()->prepare("select idbat from Batiment where numbat=:numbat");
                 $idbatiment = $res->execute(array(':numbat' => $objet->getBatiment()));
@@ -150,7 +150,7 @@ class Service
                     break;
                 }
 
-                //var_dump($idboursier);
+                ////var_dump($idboursier);
 
                 $res = $this->getPDO()->prepare("select idcham from Chambre where numcham=:numcham and idbat=:idbat");
                 $idchambre = $res->execute(array(':numcham' => $objet->getChambre(), ':idbat' => $idbatiment));
@@ -160,12 +160,12 @@ class Service
                     break;
                 }
 
-                //var_dump($idchambre);
+                ////var_dump($idchambre);
 
                 $requete = "INSERT INTO Loger (idbour,idEtu, idcham) VALUE (?,?,?)";
                 $res = $this->getPDO()->prepare($requete);
                 $donnee = $res->execute(array($idboursier, $y, $idchambre));
-                //var_dump($donnee);
+                ////var_dump($donnee);
 
                 return $donnee;
             }
@@ -204,13 +204,13 @@ class Service
         $requete = "select idEtu from Etudiant where matricule='$donnee'";
         $res = $this->getPDO()->query($requete);
         $donne = $res->fetch();
-        //var_dump($donne['idEtu']);
+        ////var_dump($donne['idEtu']);
         $y = $donne['idEtu'];
         $requete1 = "select idtype from Boursier where Boursier.idEtu=$y";
 
         $res1 = $this->getPDO()->query($requete1);
         $donne1 = $res1->fetch();
-        //var_dump($donne1['idtype']);
+        ////var_dump($donne1['idtype']);
         $z =$donne1['idtype'];
         if ($z==null) {
             return "NonBouriser";
@@ -222,7 +222,7 @@ class Service
             $res2 = $this->getPDO()->query($requete2);
             $donne2 = $res2->fetch();
 
-            //var_dump($donne2['libelle']);
+            ////var_dump($donne2['libelle']);
             $g = $donne2['libelle'];
 
             return $g;
@@ -235,9 +235,9 @@ class Service
         $res = $this->getPDO()->query($requete);
         $donne = $res->fetch();
 
-            //var_dump($donne2['libelle']);
+            ////var_dump($donne2['libelle']);
             $g = $donne['numcham'];
-            var_dump($g);
+            //var_dump($g);
             return $g;
     }
 
@@ -257,7 +257,7 @@ class Service
         $requete = "UPDATE Etudiant SET matricule=:matricule, nom=:nom, prenom=:prenom, mail=:mail, tel=:tel, ddn=:ddn where matricule=:matricule1";
         $res = $this->getPDO()->prepare($requete);
         $donne = $res->execute(array(':matricule' => $objet->getMatricule(), ':nom' => $objet->getNom(), ':prenom' => $objet->getPrenom(), ':mail' => $objet->getMail(), ':tel' => $objet->getTel(), ':ddn' => $objet->getDdn(), ':matricule1' => $matricule));
-        var_dump($donne);
+        //var_dump($donne);
         
         $pre = $this->getPDO()->prepare("SELECT idEtu from Etudiant where matricule=:mat");
         $y = $pre->execute(array(':mat' => $matricule));
@@ -265,7 +265,7 @@ class Service
             $y = $row['idEtu'];
             break;
         }
-        var_dump($y);
+        ////var_dump($y);
         if (get_class($objet) == "NonBoursier") {
 
             $pres = $this->getPDO()->prepare("select * from Loger where Loger.idEtu=:idEtu");
@@ -275,7 +275,7 @@ class Service
                 $log = $row['idEtu'];
                 //break;
             }
-            var_dump($log);
+            ////var_dump($log);
             
             $pre = $this->getPDO()->prepare("select * from Boursier where Boursier.idEtu=:idEtu");
             $zx = $pre->execute(array(':idEtu' => $y));
@@ -284,19 +284,19 @@ class Service
                 $z = $row['idEtu'];
                 //break;
             }
-            var_dump($z);
+            ////var_dump($z);
 
             if ($z!=0 || $z!=NULL) {
                 if ($log!=null || $log!=0) {
                     $requete = "DELETE FROM Loger where idEtu=:idEtu";
                     $stmt = $this->getPDO()->prepare($requete);
                     $resu = $stmt->execute(array(':idEtu' =>$log));
-                    var_dump($resu);
+                    ////var_dump($resu);
                 }
                 $requete = "DELETE FROM Boursier where idEtu=:idEtu";
                 $stmt = $this->getPDO()->prepare($requete);
                 $resu = $stmt->execute(array(':idEtu' =>$z));
-                var_dump($resu);
+                ////var_dump($resu);
 
                 $requete = "INSERT INTO NonBoursier SET idEtu=:idEtu, Adresse=:Adresse";
                 $res = $this->getPDO()->prepare($requete);
@@ -310,12 +310,12 @@ class Service
                     $z = $row['idnob'];
                     //break;
                 }
-                var_dump($z);
+                ////var_dump($z);
                 if ($zx) {
                     $requete = "UPDATE NonBoursier SET idEtu=:idEtu, Adresse=:Adresse where idnob=:idnob";
                     $res = $this->getPDO()->prepare($requete);
                     $donne = $res->execute(array(':idnob' => $z, ':idEtu' => $y, ':Adresse' => $objet->getAdresse()));
-                    var_dump($donne);
+                    ////var_dump($donne);
                 }   
             }
         }elseif (get_class($objet) == "Boursier") {
@@ -327,7 +327,7 @@ class Service
                 $log = $row['idEtu'];
                 //break;
             }
-            var_dump($log);*/
+            //var_dump($log);*/
             
             $pre = $this->getPDO()->prepare("select * from NonBoursier where NonBoursier.idEtu=:idEtu");
             $zx = $pre->execute(array(':idEtu' => $y));
@@ -336,7 +336,7 @@ class Service
                 $z = $row['idEtu'];
                 //break;
             }
-            var_dump($z);
+            //var_dump($z);
 
             $pres = $this->getPDO()->prepare("select * from Loger where Loger.idEtu=:idEtu");
             $moi = $pres->execute(array(':idEtu' => $y));
@@ -345,13 +345,13 @@ class Service
                 $log = $row['idEtu'];
                 //break;
             }
-            var_dump($log);
+            //var_dump($log);
 
             if ($z!=0 || $z!=NULL) {
                 $requete = "DELETE FROM NonBoursier where idEtu=:idEtu";
                 $stmt = $this->getPDO()->prepare($requete);
                 $resu = $stmt->execute(array(':idEtu' =>$z));
-                var_dump($resu);
+                //var_dump($resu);
 
                 $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
                 $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
@@ -360,7 +360,7 @@ class Service
                     $ter = $row['idtype'];
                     //break;
                 }
-                var_dump($ter);
+                //var_dump($ter);
 
                 $requete = "INSERT INTO Boursier (idEtu,idtype) VALUE (?,?)";
                 $res = $this->getPDO()->prepare($requete);
@@ -372,7 +372,7 @@ class Service
                     $requete = "DELETE FROM Loger where idEtu=:idEtu";
                     $stmt = $this->getPDO()->prepare($requete);
                     $resu = $stmt->execute(array(':idEtu' =>$log));
-                    var_dump($resu);
+                    //var_dump($resu);
                 }
                 $pre = $this->getPDO()->prepare("select * from Boursier where Boursier.idEtu=:idEtu");
                 $zx = $pre->execute(array(':idEtu' => $y));
@@ -381,7 +381,7 @@ class Service
                     $z = $row['idbour'];
                     //break;
                 }
-                var_dump($z);
+                //var_dump($z);
 
                 $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
                 $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
@@ -390,13 +390,13 @@ class Service
                     $ter = $row['idtype'];
                     //break;
                 }
-                var_dump($ter);
+                //var_dump($ter);
                 
                 if ($zx) {
                     $requete = "UPDATE Boursier SET idbour=:idbour, idEtu=:idEtu, idtype=:idtype  where idbour=:idbour";
                     $res = $this->getPDO()->prepare($requete);
                     $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idtype' => $ter));
-                    var_dump($donne);
+                    //var_dump($donne);
                 }
             }
         }
@@ -409,14 +409,14 @@ class Service
                 $z = $row['idEtu'];
                 //break;
             }
-            var_dump($z);
+            //var_dump($z);
             
 
             if ($z!=0 || $z!=NULL) {
                 $requete = "DELETE FROM NonBoursier where idEtu=:idEtu";
                 $stmt = $this->getPDO()->prepare($requete);
                 $resu = $stmt->execute(array(':idEtu' =>$z));
-                var_dump($resu);
+                //var_dump($resu);
 
                 $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
                 $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
@@ -425,7 +425,7 @@ class Service
                     $ter = $row['idtype'];
                     //break;
                 }
-                var_dump($ter);
+                //var_dump($ter);
 
                 $requete = "INSERT INTO Boursier (idEtu,idtype) VALUE (?,?)";
                 $res = $this->getPDO()->prepare($requete);
@@ -438,7 +438,7 @@ class Service
                     break;
                 }
 
-                //var_dump($idboursier);
+                ////var_dump($idboursier);
 
                 $res = $this->getPDO()->prepare("select idbat from Batiment where numbat=:numbat");
                 $idbatiment = $res->execute(array(':numbat' => $objet->getBatiment()));
@@ -448,7 +448,7 @@ class Service
                     break;
                 }
 
-                //var_dump($idboursier);
+                ////var_dump($idboursier);
 
                 $res = $this->getPDO()->prepare("select idcham from Chambre where numcham=:numcham and idbat=:idbat");
                 $idchambre = $res->execute(array(':numcham' => $objet->getChambre(), ':idbat' => $idbatiment));
@@ -458,12 +458,12 @@ class Service
                     break;
                 }
 
-                //var_dump($idchambre);
+                ////var_dump($idchambre);
 
                 $requete = "INSERT INTO Loger (idbour,idEtu, idcham) VALUE (?,?,?)";
                 $res = $this->getPDO()->prepare($requete);
                 $donnee = $res->execute(array($idboursier, $y, $idchambre));
-                //var_dump($donnee);
+                ////var_dump($donnee);
 
                 return $donnee;
 
@@ -475,7 +475,7 @@ class Service
                     $log = $row['idEtu'];
                     //break;
                 }
-                var_dump($log);
+                //var_dump($log);
 
                 if ($log!=0 || $log != NULL) {
                     $pre = $this->getPDO()->prepare("select * from Boursier where Boursier.idEtu=:idEtu");
@@ -485,7 +485,7 @@ class Service
                         $z = $row['idbour'];
                         //break;
                     }
-                    var_dump($z);
+                    //var_dump($z);
 
                     $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
                     $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
@@ -494,12 +494,12 @@ class Service
                         $ter = $row['idtype'];
                         //break;
                     }
-                    var_dump($ter);
+                    //var_dump($ter);
                     if ($zx) {
                         $requete = "UPDATE Boursier SET idbour=:idbour, idEtu=:idEtu, idtype=:idtype  where idbour=:idbour";
                         $res = $this->getPDO()->prepare($requete);
                         $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idtype' => $ter));
-                        var_dump($donne);
+                        //var_dump($donne);
                     }
 
                     $res = $this->getPDO()->prepare("select * from Batiment where numbat=:numbat");
@@ -509,7 +509,7 @@ class Service
                         $idbat = $row['idbat'];
                         //break;
                     }
-                    var_dump($idbat);
+                    //var_dump($idbat);
 
                     $pre2 = $this->getPDO()->prepare("select * from Chambre where numcham=:numcham AND idbat=:idbat");
                     $xyz = $pre2->execute(array(':numcham' => $objet->getChambre(), ':idbat' => $idbat));
@@ -518,13 +518,13 @@ class Service
                         $terre = $row['idcham'];
                         //break;
                     }
-                    var_dump($terre);
+                    //var_dump($terre);
 
                     if ($zx) {
                         $requete = "UPDATE Loger SET idbour=:idbour, idEtu=:idEtu, idcham=:idcham  where idbour=:idbour";
                         $res = $this->getPDO()->prepare($requete);
                         $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idcham' => $terre));
-                        var_dump($donne);
+                        //var_dump($donne);
                     }
                 }
                 else {
@@ -535,7 +535,7 @@ class Service
                         $z = $row['idbour'];
                         //break;
                     }
-                    var_dump($z);
+                    //var_dump($z);
 
                     $pre1 = $this->getPDO()->prepare("select * from Situation where libelle=:idlibelle");
                     $xy = $pre1->execute(array(':idlibelle' => $objet->getLibelle()));
@@ -544,12 +544,12 @@ class Service
                         $ter = $row['idtype'];
                         //break;
                     }
-                    var_dump($ter);
+                    //var_dump($ter);
                     if ($zx) {
                         $requete = "UPDATE Boursier SET idbour=:idbour, idEtu=:idEtu, idtype=:idtype  where idbour=:idbour";
                         $res = $this->getPDO()->prepare($requete);
                         $donne = $res->execute(array(':idbour' => $z, ':idEtu' => $y, ':idtype' => $ter));
-                        var_dump($donne);
+                        //var_dump($donne);
                     }
 
                     $res = $this->getPDO()->prepare("select * from Batiment where numbat=:numbat");
@@ -559,7 +559,7 @@ class Service
                         $idbat = $row['idbat'];
                         //break;
                     }
-                    var_dump($idbat);
+                    //var_dump($idbat);
 
                     $pre2 = $this->getPDO()->prepare("select * from Chambre where numcham=:numcham AND idbat=:idbat");
                     $xyz = $pre2->execute(array(':numcham' => $objet->getChambre(), ':idbat' => $idbat));
@@ -568,58 +568,22 @@ class Service
                         $terre = $row['idcham'];
                         //break;
                     }
-                    var_dump($terre);
+                    //var_dump($terre);
 
                     if ($zx) {
                         $requete = "INSERT INTO Loger (idbour=:idbour ,idEtu=:idEtu, idcham=:idcham  VALUES(?,?,?)";
                         $res = $this->getPDO()->prepare($requete);
                         $donne = $res->execute(array($z, $y,$terre));
-                        var_dump($donne);
+                        //var_dump($donne);
                     }
                 }
             }
         }
     }
 
-    public function Supprimer(Etudiant $objet, $matricule) {
-        $requete = "SELECT idEtu FROM Etudiant WHERE matricule=:matricule";
+    public function supprimer($matricule) {
+        $requete = "DELETE FROM Etudiant WHERE matricule=:matricule";
         $res = $this->getPDO()->prepare($requete);
-        $idetudiant=$res->execute(array(':matricule' => $matricule));
-        var_dump($idetudiant);
-        while ($row = $res->fetch()) {
-            $idetudiant = $row['idEtu'];
-        }
-        var_dump($idetudiant);
-        if (get_class($objet) == "NonBoursier" || get_class($objet) == "Boursier") {
-            $table = get_class($objet);
-            $requete = "DELETE FROM $table where idEtu=$idetudiant";
-            $res = $this->getPDO()->prepare($requete);
-            $supp=$res->execute();
-            var_dump($supp);
-
-            $sql = "DELETE FROM Etudiant where idEtu='$idetudiant'";
-            $test = $this->getPDO()->prepare($sql);
-            $supp1=$test->execute();
-            var_dump($supp1);
-        } elseif (get_class($objet) == "Loger") {
-
-            $table = get_class($objet);
-
-            $requete = "DELETE FROM Loger where idEtu=$idetudiant";
-            $res = $this->getPDO()->prepare($requete);
-            $supp=$res->execute();
-            var_dump($supp);
-
-            $req = "DELETE FROM Boursier where idEtu=$idetudiant";
-            $res1 = $this->getPDO()->prepare($req);
-            $supp1=$res1->execute();
-            var_dump($supp1);
-
-            $sql = "DELETE FROM Etudiant where idEtu=$idetudiant";
-            $test = $this->getPDO()->prepare($sql);
-            $supp2=$test->execute();
-            var_dump($supp2);
-        }
-        
+        $res->execute(array(':matricule' => $matricule));
     }
 }

@@ -40,8 +40,6 @@
             <ul>
                 <li><a href="#" class="active">LISTER</a></li>
                 <li><a href="ajout.php">AJOUTER</a></li>
-                <li><a href="#">MODIFIER</a></li>
-                <li><a href="#">SUPPRIMER</a></li>
                 <li><a href="rechercher.php">RECHERCHER</a>
                     <ul class="sousmenu">
                       <li><a href="nonboursier.php">Etudiant Non Boursier</a></li>
@@ -134,9 +132,73 @@
 
 
 <script>
-    	
-$(document).ready(function() {
-    $('#example').DataTable();
-} );
-</script>
+            $(document).ready(function() {
+                $('#example').DataTable({
+                    dom: "<'row'<'col-sm-4'f><'col-sm-offset-2 col-sm-6'B>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-xs-12 col-sm-7 col-sm-offset-5 text-right'p>>",
+                    "aoColumnDefs": [{
+                        'bSortable': false,
+                        'aTargets': [-1]
+                    }],
+                    "oLanguage": {
+                        "oPaginate": {
+                            "sFirst": "Premier",
+                            "sLast": "Dérnier",
+                            "sNext": "Suivant",
+                            "sPrevious": "Précedent",
+                        },
+                        "sSearch": "Recherche:",
+                        "sEmptyTable": "Aucune donnée disponible",
+                        "sInfo": "affichage de START à END sur TOTAL éléments",
+                        "sInfoEmpty": "Aucune donnée disponible",
+                        "sInfoFiltered": "(Recherché sur MAX éléments au total)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "sLengthMenu": "Afficher par MENU éléments",
+                        "loadingRecords": "Chargement...",
+                        "processing": "procéssus...",
+                        "sZeroRecords": "Aucun résultat trouvé",
+                    },
+                    "iDisplayLength": 10,
+                    "lengthChange": false,
+                    "info": false,
+                    buttons: [{
+                        extend: "copyHtml5",
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                        },
+                        className: "btn-sm",
+                        text: "Copier"
+                    }, {
+                        extend: "csvHtml5",
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                        },
+                        className: "btn-sm"
+                    }, {
+                        extend: "excelHtml5",
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                        },
+                        className: "btn-sm"
+                    }, {
+                        extend: "pdfHtml5",
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                        },
+                        className: "btn-sm"
+                    }, {
+                        extend: "print",
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                        },
+                        className: "btn-sm",
+                        text: "Imprimer"
+                    }],
+                    responsive: false
+                });
+
+            });
+        </script>
 
